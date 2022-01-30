@@ -7,7 +7,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     init_logger();
 
     let app = Router::new().route("/", routing::get(ping));
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+
+    let port = std::env::var("PORT")
+        .unwrap_or_else(|_| "3000".to_string())
+        .parse()
+        .unwrap();
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
 
     tracing::info!("🚀 Server running on http://{}", addr);
 
